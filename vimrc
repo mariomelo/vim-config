@@ -4,6 +4,8 @@ Plug 'mxw/vim-jsx'
 Plug 'elzr/vim-json'
 Plug 'altercation/vim-colors-solarized'
 Plug 'itchyny/lightline.vim'
+Plug 'airblade/vim-gitgutter'
+Plug 'nathanaelkane/vim-indent-guides'
 call plug#end()
 
 " Basic Configuration
@@ -24,12 +26,13 @@ set hlsearch
 set showmatch
 set noshowmode
 set laststatus=2
-
+set is
 " Theme options
 let g:solarized_termcolors = 256
 let g:solarized_visibility = "high"
 let g:solarized_contrast = "high"
 colorscheme solarized 
+set background=dark
 
 " Keyboard Shortcuts
 let mapleader=" "
