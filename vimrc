@@ -1,12 +1,15 @@
 call plug#begin()
+Plug 'roman/golden-ratio'
 Plug 'mattn/emmet-vim'
 Plug 'w0rp/ale'
 Plug 'pangloss/vim-javascript', { 'for': 'javascript' }
+Plug 'vim-airline/vim-airline'
+Plug 'vim-airline/vim-airline-themes'
 Plug 'mxw/vim-jsx'
 Plug 'elzr/vim-json'
 Plug 'altercation/vim-colors-solarized'
-Plug 'itchyny/lightline.vim'
 Plug 'airblade/vim-gitgutter'
+Plug 'Chiel92/vim-autoformat'
 Plug 'nathanaelkane/vim-indent-guides'
 Plug 'scrooloose/nerdtree'
 Plug 'kien/ctrlp.vim'
@@ -68,3 +71,6 @@ nnoremap <Leader><Leader> :e#<CR>
 nnoremap <Leader>f :NERDTreeToggle<Enter>
 " Space + G to toggle GitGutter (git information)
 nnoremap <Leader>g :GitGutterToggle<Enter>
+" jj to return to Normal mode
+inoremap jj <ESC><CR>
+nnoremap <tab> <c-W>
