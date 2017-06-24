@@ -1,6 +1,7 @@
 call plug#begin()
 Plug 'roman/golden-ratio'
 Plug 'mattn/emmet-vim'
+Plug 'morhetz/gruvbox'
 Plug 'w0rp/ale'
 Plug 'pangloss/vim-javascript', { 'for': 'javascript' }
 Plug 'vim-airline/vim-airline'
@@ -44,8 +45,10 @@ let g:solarized_termcolors = 256
 let g:solarized_bold = 1
 "let g:solarized_visibility = "high"
 "let g:solarized_contrast = "high"
+let g:gruvbox_termcolors = 256
 colorscheme solarized 
-set background=light
+colorscheme gruvbox
+set background=dark
 
 " NerdTREE Config
 let NERDTreeMinimalUI = 1
@@ -56,6 +59,7 @@ let NERDTreeIgnore = ['node_modules']
 let g:UltiSnipsExpandTrigger="<tab>"
 let g:UltiSnipsJumpForwardTrigger="<c-b>"
 let g:UltiSnipsJumpBackwardTrigger="<c-z>"
+
 
 " If you want :UltiSnipsEdit to split your window.
 let g:UltiSnipsEditSplit="vertical"
@@ -72,5 +76,6 @@ nnoremap <Leader>f :NERDTreeToggle<Enter>
 " Space + G to toggle GitGutter (git information)
 nnoremap <Leader>g :GitGutterToggle<Enter>
 " jj to return to Normal mode
-inoremap jj <ESC><CR>
-nnoremap <tab> <c-W>
+inoremap jj <ESC>
+" Use TAB to change Split Panels
+nnoremap <TAB> <C-w>w
