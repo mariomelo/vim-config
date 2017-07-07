@@ -19,9 +19,7 @@ Plug 'mhinz/vim-startify'
 Plug 'ternjs/tern_for_vim', { 'do': 'npm install' }
 Plug 'SirVer/ultisnips'
 Plug 'gcmt/taboo.vim'
-Plug 'crusoexia/vim-monokai'
-Plug 'KeitaNakamura/neodark.vim'
-Plug 'altercation/vim-colors-solarized'
+Plug 'lifepillar/vim-mucomplete'
 call plug#end()
 
 " Basic Configuration
@@ -46,6 +44,20 @@ set laststatus=2
 set is
 set wildignore+=*/tmp/*,*.so,*.swp,*.zip,*/node_modules/*,*.css
 let g:jsx_ext_required = 0
+
+" MuComplete Config
+inoremap <expr> <c-e> mucomplete#popup_exit("\<c-e>")
+inoremap <expr> <c-y> mucomplete#popup_exit("\<c-y>")
+inoremap <expr>  <cr> mucomplete#popup_exit("\<cr>")
+set completeopt=longest,menuone
+set completeopt+=noinsert
+let g:mucomplete#enable_auto_at_startup = 1
+let g:mucomplete#buffer_relative_paths = 1
+let g:mucomplete#chains = {
+    \ 'default' : ['path', 'omni', 'keyn', 'dict', 'uspl', 'ulti'],
+    \ 'vim'     : ['path', 'cmd', 'keyn']
+ \ }
+
 " Javascript autoformat
 let g:ale_fixers = {}
 let g:ale_fixers['javascript'] = ['prettier']
@@ -76,7 +88,6 @@ let g:UltiSnipsJumpForwardTrigger="<c-b>"
 let g:UltiSnipsJumpBackwardTrigger="<c-z>"
 
 " Autocomplete
-set completeopt=longest,menuone
 
 " Salva as abas na sessão
 set sessionoptions+=tabpages,globals
