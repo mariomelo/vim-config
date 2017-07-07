@@ -20,6 +20,7 @@ Plug 'ternjs/tern_for_vim', { 'do': 'npm install' }
 Plug 'SirVer/ultisnips'
 Plug 'gcmt/taboo.vim'
 Plug 'lifepillar/vim-mucomplete'
+Plug 'rking/ag.vim'
 call plug#end()
 
 " Basic Configuration
