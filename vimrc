@@ -1,14 +1,14 @@
 call plug#begin()
+Plug 'jelera/vim-javascript-syntax'
 Plug 'roman/golden-ratio'
 Plug 'mattn/emmet-vim'
 Plug 'morhetz/gruvbox'
 Plug 'w0rp/ale'
-Plug 'pangloss/vim-javascript', { 'for': 'javascript' }
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
+Plug 'pangloss/vim-javascript'
 Plug 'mxw/vim-jsx'
 Plug 'elzr/vim-json'
-Plug 'altercation/vim-colors-solarized'
 Plug 'airblade/vim-gitgutter'
 Plug 'Chiel92/vim-autoformat'
 Plug 'nathanaelkane/vim-indent-guides'
@@ -16,10 +16,16 @@ Plug 'scrooloose/nerdtree'
 Plug 'kien/ctrlp.vim'
 Plug 'honza/vim-snippets'
 Plug 'mhinz/vim-startify'
+Plug 'ternjs/tern_for_vim', { 'do': 'npm install' }
 Plug 'SirVer/ultisnips'
+Plug 'gcmt/taboo.vim'
+Plug 'crusoexia/vim-monokai'
+Plug 'KeitaNakamura/neodark.vim'
+Plug 'altercation/vim-colors-solarized'
 call plug#end()
 
-" Basid Configuration
+" Basic Configuration
+set nocompatible
 filetype plugin indent on
 syntax enable
 set guifont=Menlo\ Regular:h18
@@ -38,28 +44,42 @@ set showmatch
 set noshowmode
 set laststatus=2
 set is
-set wildignore+=*/tmp/*,*.so,*.swp,*.zip,*/node_modules/*
-
+set wildignore+=*/tmp/*,*.so,*.swp,*.zip,*/node_modules/*,*.css
+let g:jsx_ext_required = 0
+" Javascript autoformat
+let g:ale_fixers = {}
+let g:ale_fixers['javascript'] = ['prettier']
+let g:ale_fixers['scss'] = ['prettier']
+let g:ale_fix_on_save = 1
+let g:ale_javascript_prettier_options = '--trailing-comma --no-semi --no-bracket-spacing
+      \ --single-quote --jsx-bracket-same-line --print-width 120'
+     
 " Theme options
-let g:solarized_termcolors = 256
-let g:solarized_bold = 1
-"let g:solarized_visibility = "high"
-"let g:solarized_contrast = "high"
 let g:gruvbox_termcolors = 256
-colorscheme solarized 
+let g:gruvbox_italic=1
+let g:gruvbox_contrast_light='hard'
+let g:gruvbox_contrast_dark='soft'
 colorscheme gruvbox
-set background=dark
 
 " NerdTREE Config
 let NERDTreeMinimalUI = 1
 let NERDTreeDirArrows = 1
 let NERDTreeIgnore = ['node_modules']
 
+" Airline Config
+let g:airline#extensions#tabline#enabled = 1
+let g:airline#extensions#tabline#fnamemod = ':t'
+
 " Snippets Configuration
 let g:UltiSnipsExpandTrigger="<tab>"
 let g:UltiSnipsJumpForwardTrigger="<c-b>"
 let g:UltiSnipsJumpBackwardTrigger="<c-z>"
 
+" Autocomplete
+set completeopt=longest,menuone
+
+" Salva as abas na sessão
+set sessionoptions+=tabpages,globals
 
 " If you want :UltiSnipsEdit to split your window.
 let g:UltiSnipsEditSplit="vertical"
@@ -76,6 +96,14 @@ nnoremap <Leader>f :NERDTreeToggle<Enter>
 " Space + G to toggle GitGutter (git information)
 nnoremap <Leader>g :GitGutterToggle<Enter>
 " jj to return to Normal mode
-inoremap jj <ESC>
+inoremap jj <ESC>l
+" jk to return to Normal Mode and save file
+inoremap jk <ESC>:w<CR>
 " Use TAB to change Split Panels
 nnoremap <TAB> <C-w>w
+" Use prettier to format Javascript code with gp
+nnoremap gp :silent %!prettier --stdin --trailing-comma all --single-quote<CR>
+
+" Custom commands
+command! Dark execute "set background=dark"
+command! Light execute "set background=light"
