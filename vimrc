@@ -1,26 +1,27 @@
 call plug#begin()
 Plug 'jelera/vim-javascript-syntax'
 Plug 'roman/golden-ratio'
-Plug 'mattn/emmet-vim'
 Plug 'morhetz/gruvbox'
 Plug 'w0rp/ale'
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 Plug 'pangloss/vim-javascript'
+Plug 'jparise/vim-graphql'
 Plug 'mxw/vim-jsx'
 Plug 'elzr/vim-json'
 Plug 'airblade/vim-gitgutter'
 Plug 'Chiel92/vim-autoformat'
 Plug 'nathanaelkane/vim-indent-guides'
-Plug 'scrooloose/nerdtree'
 Plug 'kien/ctrlp.vim'
-Plug 'honza/vim-snippets'
 Plug 'mhinz/vim-startify'
 Plug 'ternjs/tern_for_vim', { 'do': 'npm install' }
-Plug 'SirVer/ultisnips'
 Plug 'gcmt/taboo.vim'
 Plug 'lifepillar/vim-mucomplete'
 Plug 'rking/ag.vim'
+Plug 'nightsense/carbonized'
+Plug 'tpope/vim-surround'
+Plug 'tpope/vim-fugitive'
+Plug 'chriskempson/base16-vim'
 call plug#end()
 
 " Basic Configuration
@@ -28,7 +29,7 @@ set nocompatible
 filetype plugin indent on
 syntax enable
 set guifont=Menlo\ Regular:h18
-set colorcolumn=120
+set colorcolumn=80
 set number
 set hidden
 set history=100
@@ -70,9 +71,11 @@ let g:ale_javascript_prettier_options = '--trailing-comma --no-semi --no-bracket
 " Theme options
 let g:gruvbox_termcolors = 256
 let g:gruvbox_italic=1
-let g:gruvbox_contrast_light='hard'
+let g:gruvbox_contrast_light='medium'
 let g:gruvbox_contrast_dark='soft'
 colorscheme gruvbox
+
+let base16colorspace=256
 
 " NerdTREE Config
 let NERDTreeMinimalUI = 1
@@ -82,6 +85,7 @@ let NERDTreeIgnore = ['node_modules']
 " Airline Config
 let g:airline#extensions#tabline#enabled = 1
 let g:airline#extensions#tabline#fnamemod = ':t'
+let g:airline_powerline_fonts = 1
 
 " Snippets Configuration
 let g:UltiSnipsExpandTrigger="<C-J>"
@@ -102,6 +106,9 @@ map <leader>s :source ~/.vim/vimrc<CR>
 
 " Double Space to open last closed file
 nnoremap <Leader><Leader> :e#<CR>
+
+"Avoid keymap duplicates
+nnoremap <C>@ <Plug>MuComplete
 
 " Space + F to toggle NerdTREE (Current Folder File Tree)
 nnoremap <Leader>f :NERDTreeToggle<Enter>
