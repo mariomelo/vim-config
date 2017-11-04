@@ -1,5 +1,5 @@
 call plug#begin()
-Plug 'jelera/vim-javascript-syntax'
+"Plug 'jelera/vim-javascript-syntax'
 Plug 'roman/golden-ratio'
 Plug 'morhetz/gruvbox'
 Plug 'w0rp/ale'
@@ -11,17 +11,11 @@ Plug 'mxw/vim-jsx'
 Plug 'elzr/vim-json'
 Plug 'airblade/vim-gitgutter'
 Plug 'Chiel92/vim-autoformat'
-Plug 'nathanaelkane/vim-indent-guides'
 Plug 'kien/ctrlp.vim'
 Plug 'mhinz/vim-startify'
 Plug 'ternjs/tern_for_vim', { 'do': 'npm install' }
 Plug 'gcmt/taboo.vim'
 Plug 'lifepillar/vim-mucomplete'
-Plug 'rking/ag.vim'
-Plug 'nightsense/carbonized'
-Plug 'tpope/vim-surround'
-Plug 'tpope/vim-fugitive'
-Plug 'chriskempson/base16-vim'
 call plug#end()
 
 " Basic Configuration
@@ -71,38 +65,23 @@ let g:ale_javascript_prettier_options = '--trailing-comma --no-semi --no-bracket
 " Theme options
 let g:gruvbox_termcolors = 256
 let g:gruvbox_italic=1
-let g:gruvbox_contrast_light='medium'
-let g:gruvbox_contrast_dark='soft'
+let g:gruvbox_contrast_dark='medium'
+let g:gruvbox_contrast_light='hard'
 colorscheme gruvbox
-
-let base16colorspace=256
-
-" NerdTREE Config
-let NERDTreeMinimalUI = 1
-let NERDTreeDirArrows = 1
-let NERDTreeIgnore = ['node_modules']
+hi def link jsObjectKey Label
 
 " Airline Config
 let g:airline#extensions#tabline#enabled = 1
 let g:airline#extensions#tabline#fnamemod = ':t'
 let g:airline_powerline_fonts = 1
 
-" Snippets Configuration
-let g:UltiSnipsExpandTrigger="<C-J>"
-let g:UltiSnipsJumpForwardTrigger="<C-J>"
-let g:UltiSnipsJumpBackwardTrigger="<C-K>"
-
-" Autocomplete
-
 " Salva as abas na sessão
 set sessionoptions+=tabpages,globals
-
-" If you want :UltiSnipsEdit to split your window.
-let g:UltiSnipsEditSplit="vertical"
 
 " Keyboard Shortcuts
 let mapleader=" "
 map <leader>s :source ~/.vim/vimrc<CR>
+map <leader>S :e ~/.vim/vimrc<CR>
 
 " Double Space to open last closed file
 nnoremap <Leader><Leader> :e#<CR>
@@ -110,8 +89,6 @@ nnoremap <Leader><Leader> :e#<CR>
 "Avoid keymap duplicates
 nnoremap <C>@ <Plug>MuComplete
 
-" Space + F to toggle NerdTREE (Current Folder File Tree)
-nnoremap <Leader>f :NERDTreeToggle<Enter>
 " Space + G to toggle GitGutter (git information)
 nnoremap <Leader>g :GitGutterToggle<Enter>
 " jj to return to Normal mode
