@@ -1,7 +1,6 @@
 call plug#begin()
-"Plug 'jelera/vim-javascript-syntax'
+Plug 'chriskempson/base16-vim'
 Plug 'roman/golden-ratio'
-Plug 'morhetz/gruvbox'
 Plug 'w0rp/ale'
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
@@ -16,6 +15,7 @@ Plug 'mhinz/vim-startify'
 Plug 'ternjs/tern_for_vim', { 'do': 'npm install' }
 Plug 'gcmt/taboo.vim'
 Plug 'lifepillar/vim-mucomplete'
+Plug 'rakr/vim-one'
 call plug#end()
 
 " Basic Configuration
@@ -58,22 +58,23 @@ let g:mucomplete#chains = {
 let g:ale_fixers = {}
 let g:ale_fixers['javascript'] = ['prettier']
 let g:ale_fixers['scss'] = ['prettier']
+let g:ale_fixers['graphql'] = ['prettier']
 let g:ale_fix_on_save = 1
 let g:ale_javascript_prettier_options = '--trailing-comma --no-semi --no-bracket-spacing
       \ --single-quote --jsx-bracket-same-line --print-width 120'
      
 " Theme options
-let g:gruvbox_termcolors = 256
-let g:gruvbox_italic=1
-let g:gruvbox_contrast_dark='medium'
-let g:gruvbox_contrast_light='hard'
-colorscheme gruvbox
+set termguicolors
+colorscheme base16-gruvbox-dark-pale
+let g:one_allow_italics = 1
 hi def link jsObjectKey Label
+highlight Pmenu ctermfg=15 ctermbg=0 guifg=#ffffff guibg=#000000
 
 " Airline Config
 let g:airline#extensions#tabline#enabled = 1
 let g:airline#extensions#tabline#fnamemod = ':t'
 let g:airline_powerline_fonts = 1
+let g:airline_theme='base16_paraiso'
 
 " Salva as abas na sessão
 set sessionoptions+=tabpages,globals
@@ -95,11 +96,23 @@ nnoremap <Leader>g :GitGutterToggle<Enter>
 inoremap jj <ESC>l
 " jk to return to Normal Mode and save file
 inoremap jk <ESC>:w<CR>
+nnoremap <Leader>h :nohl<CR>
 " Use TAB to change Split Panels
 nnoremap <TAB> <C-w>w
 " Use prettier to format Javascript code with gp
 nnoremap gp :silent %!prettier --stdin --trailing-comma all --single-quote<CR>
+"Next and Previous Error
+nnoremap <Leader>j :ALENext<CR>
+nnoremap <Leader>k :ALEPrevious<CR>
 
 " Custom commands
-command! Dark execute "set background=dark"
-command! Light execute "set background=light"
+command! Dark execute "colorscheme base16-gruvbox-dark-pale"
+command! Light execute "colorscheme base16-solarized-light"
+command! Mocha execute "colorscheme base16-mocha"
+
+" Find and Replace
+nnoremap <Leader>f :vimgrep /
+nnoremap <Leader>r :%s/
+
+"Copy to Clipboard
+nnoremap <Leader>c "+y
