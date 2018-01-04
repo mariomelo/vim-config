@@ -15,7 +15,9 @@ Plug 'mhinz/vim-startify'
 Plug 'ternjs/tern_for_vim', { 'do': 'npm install' }
 Plug 'gcmt/taboo.vim'
 Plug 'lifepillar/vim-mucomplete'
-Plug 'rakr/vim-one'
+Plug 'tmhedberg/matchit'
+Plug 'Townk/vim-autoclose'
+Plug 'alvan/vim-closetag'
 call plug#end()
 
 " Basic Configuration
@@ -23,7 +25,6 @@ set nocompatible
 filetype plugin indent on
 syntax enable
 set guifont=Menlo\ Regular:h18
-set colorcolumn=80
 set number
 set hidden
 set history=100
