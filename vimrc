@@ -18,13 +18,15 @@ Plug 'lifepillar/vim-mucomplete'
 Plug 'tmhedberg/matchit'
 Plug 'Townk/vim-autoclose'
 Plug 'alvan/vim-closetag'
+Plug 'othree/html5.vim'
+Plug 'posva/vim-vue'
 call plug#end()
 
 " Basic Configuration
 set nocompatible
 filetype plugin indent on
 syntax enable
-set guifont=Menlo\ Regular:h18
+set guifont=Menlo\ Regular:h16
 set number
 set hidden
 set history=100
@@ -39,7 +41,7 @@ set showmatch
 set noshowmode
 set laststatus=2
 set is
-set wildignore+=*/tmp/*,*.so,*.swp,*.zip,*/node_modules/*,*.css
+set wildignore+=*/tmp/*,*.so,*.swp,*.pdf,*.zip,*/node_modules/*,*.css
 let g:jsx_ext_required = 0
 
 " MuComplete Config
@@ -60,22 +62,23 @@ let g:ale_fixers = {}
 let g:ale_fixers['javascript'] = ['prettier']
 let g:ale_fixers['scss'] = ['prettier']
 let g:ale_fixers['graphql'] = ['prettier']
+let g:ale_fixers['html'] = ['prettier']
+let g:ale_fixers['vue'] = ['prettier']
 let g:ale_fix_on_save = 1
 let g:ale_javascript_prettier_options = '--trailing-comma --no-semi --no-bracket-spacing
       \ --single-quote --jsx-bracket-same-line --print-width 120'
      
 " Theme options
 set termguicolors
-colorscheme base16-gruvbox-dark-pale
+colorscheme base16-mocha
 let g:one_allow_italics = 1
 hi def link jsObjectKey Label
-highlight Pmenu ctermfg=15 ctermbg=0 guifg=#ffffff guibg=#000000
 
 " Airline Config
 let g:airline#extensions#tabline#enabled = 1
 let g:airline#extensions#tabline#fnamemod = ':t'
 let g:airline_powerline_fonts = 1
-let g:airline_theme='base16_paraiso'
+let g:airline_theme='base16_mocha'
 
 " Salva as abas na sessão
 set sessionoptions+=tabpages,globals
@@ -114,6 +117,8 @@ command! Mocha execute "colorscheme base16-mocha"
 " Find and Replace
 nnoremap <Leader>f :vimgrep /
 nnoremap <Leader>r :%s/
+nnoremap <Leader>n :cn<CR>
+nnoremap <Leader>p :cp<CR>
 
 "Copy to Clipboard
 nnoremap <Leader>c "+y
