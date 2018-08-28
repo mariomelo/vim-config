@@ -1,6 +1,8 @@
 call plug#begin()
+if !&diff
+  Plug 'roman/golden-ratio'
+endif
 Plug 'chriskempson/base16-vim'
-Plug 'roman/golden-ratio'
 Plug 'w0rp/ale'
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
@@ -20,6 +22,7 @@ Plug 'Townk/vim-autoclose'
 Plug 'alvan/vim-closetag'
 Plug 'othree/html5.vim'
 Plug 'posva/vim-vue'
+Plug 'digitaltoad/vim-pug'
 call plug#end()
 
 " Basic Configuration
@@ -41,7 +44,7 @@ set showmatch
 set noshowmode
 set laststatus=2
 set is
-set wildignore+=*/tmp/*,*.so,*.swp,*.pdf,*.zip,*/node_modules/*,*.css
+set wildignore+=*/tmp/*,*.so,*.swp,*.pdf,*.zip,*/node_modules/*,*/build/*,*/dist/*
 let g:jsx_ext_required = 0
 
 " MuComplete Config
@@ -70,7 +73,7 @@ let g:ale_javascript_prettier_options = '--trailing-comma --no-semi --no-bracket
      
 " Theme options
 set termguicolors
-colorscheme base16-mocha
+colorscheme base16-materia
 let g:one_allow_italics = 1
 hi def link jsObjectKey Label
 
@@ -78,7 +81,7 @@ hi def link jsObjectKey Label
 let g:airline#extensions#tabline#enabled = 1
 let g:airline#extensions#tabline#fnamemod = ':t'
 let g:airline_powerline_fonts = 1
-let g:airline_theme='base16_mocha'
+let g:airline_theme='base16_monokai'
 
 " Salva as abas na sessão
 set sessionoptions+=tabpages,globals
@@ -110,8 +113,8 @@ nnoremap <Leader>j :ALENext<CR>
 nnoremap <Leader>k :ALEPrevious<CR>
 
 " Custom commands
-command! Dark execute "colorscheme base16-gruvbox-dark-pale"
-command! Light execute "colorscheme base16-solarized-light"
+command! Dark execute "colorscheme base16-materia"
+command! Light execute "colorscheme base16-google-light"
 command! Mocha execute "colorscheme base16-mocha"
 
 " Find and Replace
@@ -122,3 +125,8 @@ nnoremap <Leader>p :cp<CR>
 
 "Copy to Clipboard
 nnoremap <Leader>c "+y
+
+"VimDiff configuration
+"" If doing a diff. Upon writing changes to file, automatically update the
+" differences
+autocmd BufWritePost * if &diff == 1 | diffupdate | endif
