@@ -2,6 +2,8 @@ call plug#begin()
 if !&diff
   Plug 'roman/golden-ratio'
 endif
+Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
+Plug 'junegunn/fzf.vim'
 Plug 'chriskempson/base16-vim'
 Plug 'w0rp/ale'
 Plug 'vim-airline/vim-airline'
@@ -12,17 +14,14 @@ Plug 'mxw/vim-jsx'
 Plug 'elzr/vim-json'
 Plug 'airblade/vim-gitgutter'
 Plug 'Chiel92/vim-autoformat'
-Plug 'kien/ctrlp.vim'
 Plug 'mhinz/vim-startify'
 Plug 'ternjs/tern_for_vim', { 'do': 'npm install' }
 Plug 'gcmt/taboo.vim'
-Plug 'lifepillar/vim-mucomplete'
 Plug 'tmhedberg/matchit'
 Plug 'Townk/vim-autoclose'
 Plug 'alvan/vim-closetag'
 Plug 'othree/html5.vim'
 Plug 'posva/vim-vue'
-Plug 'digitaltoad/vim-pug'
 call plug#end()
 
 " Basic Configuration
@@ -46,19 +45,6 @@ set laststatus=2
 set is
 set wildignore+=*/tmp/*,*.so,*.swp,*.pdf,*.zip,*/node_modules/*,*/build/*,*/dist/*
 let g:jsx_ext_required = 0
-
-" MuComplete Config
-inoremap <expr> <c-e> mucomplete#popup_exit("\<c-e>")
-inoremap <expr> <c-y> mucomplete#popup_exit("\<c-y>")
-inoremap <expr>  <cr> mucomplete#popup_exit("\<cr>")
-set completeopt=longest,menuone
-set completeopt+=noinsert
-let g:mucomplete#enable_auto_at_startup = 1
-let g:mucomplete#buffer_relative_paths = 1
-let g:mucomplete#chains = {
-    \ 'default' : ['path', 'omni', 'keyn', 'dict', 'uspl', 'ulti'],
-    \ 'vim'     : ['path', 'cmd', 'keyn']
- \ }
 
 " Javascript autoformat
 let g:ale_fixers = {}
@@ -96,6 +82,9 @@ nnoremap <Leader><Leader> :e#<CR>
 
 "Avoid keymap duplicates
 nnoremap <C>@ <Plug>MuComplete
+
+" CTRL+P open FZF
+nnoremap <C-p> :FZF<CR>
 
 " Space + G to toggle GitGutter (git information)
 nnoremap <Leader>g :GitGutterToggle<Enter>
