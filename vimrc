@@ -70,6 +70,7 @@ set wildignore+=*/tmp/*,*.so,*.swp,*.pdf,*.zip,*/node_modules/*,*/build/*,*/dist
 let g:jsx_ext_required = 0
 
 " ALE
+set omnifunc=ale#completion#OmniFunc
 let g:ale_completion_enabled = 1
 let g:ale_sign_error = '✘'
 let g:ale_sign_warning = '⚠'
@@ -80,6 +81,8 @@ highlight ALEWarningSign ctermbg=NONE ctermfg=yellow
 let g:ale_linters_explicit = 1
 let g:ale_lint_on_save = 1
 let g:ale_fix_on_save = 1
+nnoremap <Leader>j :ALENext<CR>
+nnoremap <Leader>k :ALEPrevious<CR>
 
 " Elixir
 let g:ale_elixir_elixir_ls_release = '/Users/melomario/.elixir/elixir-ls/release'
@@ -141,9 +144,6 @@ nnoremap <TAB> <C-w>w
 nnoremap gp :silent %!prettier --stdin --trailing-comma all --single-quote<CR>
 
 " ALE Config
-nnoremap <Leader>j :ALENext<CR>
-nnoremap <Leader>k :ALEPrevious<CR>
-source ~/.vim/ale
 
 " Custom commands
 command! Dark execute "colorscheme base16-materia"
