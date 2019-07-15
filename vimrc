@@ -1,3 +1,19 @@
+" Instalao vim-plug automaticamente
+let plugpath = expand('<sfile>:p:h'). '/autoload/plug.vim'
+if !filereadable(plugpath)
+    if executable('curl')
+        let plugurl = 'https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
+        call system('curl -fLo ' . shellescape(plugpath) . ' --create-dirs ' . plugurl)
+        if v:shell_error
+            echom "Error downloading vim-plug. Please install it manually.\n"
+            exit
+        endif
+    else
+        echom "vim-plug not installed. Please install it manually or install curl.\n"
+        exit
+    endif
+endif
+
 call plug#begin()
 if !&diff
   Plug 'roman/golden-ratio'
@@ -5,7 +21,8 @@ endif
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
 Plug 'chriskempson/base16-vim'
-Plug 'w0rp/ale'
+Plug 'mhartington/oceanic-next'
+Plug 'ryanoasis/vim-devicons'
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 Plug 'pangloss/vim-javascript'
@@ -17,11 +34,17 @@ Plug 'Chiel92/vim-autoformat'
 Plug 'mhinz/vim-startify'
 Plug 'ternjs/tern_for_vim', { 'do': 'npm install' }
 Plug 'gcmt/taboo.vim'
+Plug 'w0rp/ale'
 Plug 'tmhedberg/matchit'
 Plug 'Townk/vim-autoclose'
 Plug 'alvan/vim-closetag'
 Plug 'othree/html5.vim'
 Plug 'posva/vim-vue'
+
+" Elixir
+Plug 'elixir-editors/vim-elixir', { 'for': 'elixir' }
+Plug 'mhinz/vim-mix-format', { 'for': 'elixir' }
+Plug 'tpope/vim-endwise'
 call plug#end()
 
 " Basic Configuration
@@ -46,13 +69,32 @@ set is
 set wildignore+=*/tmp/*,*.so,*.swp,*.pdf,*.zip,*/node_modules/*,*/build/*,*/dist/*
 let g:jsx_ext_required = 0
 
+" ALE
+let g:ale_completion_enabled = 1
+let g:ale_sign_error = '✘'
+let g:ale_sign_warning = '⚠'
+let g:ale_lint_on_enter = 0
+let g:ale_lint_on_text_changed = 'never'
+highlight ALEErrorSign ctermbg=NONE ctermfg=red
+highlight ALEWarningSign ctermbg=NONE ctermfg=yellow
+let g:ale_linters_explicit = 1
+let g:ale_lint_on_save = 1
+let g:ale_fix_on_save = 1
+
+" Elixir
+let g:ale_elixir_elixir_ls_release = '/Users/melomario/.elixir/elixir-ls/release'
+let g:mix_format_on_save = 1
+
 " Javascript autoformat
 let g:ale_fixers = {}
+let g:ale_linters = {}
 let g:ale_fixers['javascript'] = ['prettier']
 let g:ale_fixers['scss'] = ['prettier']
 let g:ale_fixers['graphql'] = ['prettier']
 let g:ale_fixers['html'] = ['prettier']
 let g:ale_fixers['vue'] = ['prettier']
+let g:ale_fixers['elixir'] = ['mix_format']
+let g:ale_linters['elixir'] = ['elixir-ls']
 let g:ale_fix_on_save = 1
 let g:ale_javascript_prettier_options = '--trailing-comma --no-semi --no-bracket-spacing
       \ --single-quote --jsx-bracket-same-line --print-width 120'
@@ -97,14 +139,17 @@ nnoremap <Leader>h :nohl<CR>
 nnoremap <TAB> <C-w>w
 " Use prettier to format Javascript code with gp
 nnoremap gp :silent %!prettier --stdin --trailing-comma all --single-quote<CR>
-"Next and Previous Error
+
+" ALE Config
 nnoremap <Leader>j :ALENext<CR>
 nnoremap <Leader>k :ALEPrevious<CR>
+source ~/.vim/ale
 
 " Custom commands
 command! Dark execute "colorscheme base16-materia"
 command! Light execute "colorscheme base16-google-light"
 command! Mocha execute "colorscheme base16-mocha"
+command! Ocean execute "colorscheme OceanicNext"
 
 " Find and Replace
 nnoremap <Leader>f :vimgrep /
@@ -119,3 +164,60 @@ nnoremap <Leader>c "+y
 "" If doing a diff. Upon writing changes to file, automatically update the
 " differences
 autocmd BufWritePost * if &diff == 1 | diffupdate | endif
+
+set cmdheight=1
+set shortmess+=c
+set noruler
+
+" === Vim airline ==== "
+" Enable extensions
+try
+let g:airline_extensions = ['branch', 'hunks', 'coc']
+
+" Update section z to just have line number
+let g:airline_section_z = airline#section#create(['linenr'])
+
+" Do not draw separators for empty sections (only for the active window) >
+let g:airline_skip_empty_sections = 1
+
+" Smartly uniquify buffers names with similar filename, suppressing common parts of paths.
+let g:airline#extensions#tabline#formatter = 'unique_tail'
+
+" Custom setup that removes filetype/whitespace from default vim airline bar
+let g:airline#extensions#default#layout = [['a', 'b', 'c'], ['x', 'z', 'warning', 'error']]
+
+let airline#extensions#coc#stl_format_err = '%E{[%e(#%fe)]}'
+
+let airline#extensions#coc#stl_format_warn = '%W{[%w(#%fw)]}'
+
+" Configure error/warning section to use coc.nvim
+let g:airline_section_error = '%{airline#util#wrap(airline#extensions#coc#get_error(),0)}'
+let g:airline_section_warning = '%{airline#util#wrap(airline#extensions#coc#get_warning(),0)}'
+
+" Disable vim-airline in preview mode
+let g:airline_exclude_preview = 1
+
+" Enable powerline fonts
+let g:airline_powerline_fonts = 1
+
+" Enable caching of syntax highlighting groups
+let g:airline_highlighting_cache = 1
+
+" Define custom airline symbols
+if !exists('g:airline_symbols')
+  let g:airline_symbols = {}
+endif
+
+" unicode symbols
+let g:airline_left_sep = '❮'
+let g:airline_right_sep = '❯'
+
+" Don't show git changes to current file in airline
+let g:airline#extensions#hunks#enabled=0
+
+catch
+  echo 'Airline not installed. It should work after running :PlugInstall'
+endtry
+
+set noswapfile
+
