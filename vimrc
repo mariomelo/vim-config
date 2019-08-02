@@ -18,6 +18,7 @@ call plug#begin()
 if !&diff
   Plug 'roman/golden-ratio'
 endif
+Plug 'sainnhe/gruvbox-material'
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
 Plug 'chriskempson/base16-vim'
@@ -40,11 +41,16 @@ Plug 'Townk/vim-autoclose'
 Plug 'alvan/vim-closetag'
 Plug 'othree/html5.vim'
 Plug 'posva/vim-vue'
-
+Plug 'liuchengxu/vista.vim'
+Plug 'ervandew/supertab'
+Plug 'SirVer/ultisnips'
+Plug 'honza/vim-snippets'
+Plug 'Valloric/YouCompleteMe', { 'do': './install.py' }
 " Elixir
 Plug 'elixir-editors/vim-elixir', { 'for': 'elixir' }
 Plug 'mhinz/vim-mix-format', { 'for': 'elixir' }
 Plug 'tpope/vim-endwise'
+
 call plug#end()
 
 " Basic Configuration
@@ -70,7 +76,6 @@ set wildignore+=*/tmp/*,*.so,*.swp,*.pdf,*.zip,*/node_modules/*,*/build/*,*/dist
 let g:jsx_ext_required = 0
 
 " ALE
-set omnifunc=ale#completion#OmniFunc
 let g:ale_completion_enabled = 1
 let g:ale_sign_error = '✘'
 let g:ale_sign_warning = '⚠'
@@ -84,9 +89,21 @@ let g:ale_fix_on_save = 1
 nnoremap <Leader>j :ALENext<CR>
 nnoremap <Leader>k :ALEPrevious<CR>
 
+" YouCompleteMe
+let g:ycm_key_list_select_completion = ['<C-n>', '<Down>']
+let g:ycm_key_list_previous_completion = ['<C-p>', '<Up>']
+let g:SuperTabDefaultCompletionType = '<C-n>'
+
+" Snippets
+let g:UltiSnipsExpandTrigger="<tab>"
+let g:UltiSnipsJumpForwardTrigger="<C-J>"
+let g:UltiSnipsJumpBackwardTrigger="<C-K>"
+
+" If you want :UltiSnipsEdit to split your window.
+let g:UltiSnipsEditSplit="vertical"
 " Elixir
 let g:ale_elixir_elixir_ls_release = '/Users/melomario/.elixir/elixir-ls/release'
-let g:mix_format_on_save = 1
+" let g:mix_format_on_save = 1
 
 " Javascript autoformat
 let g:ale_fixers = {}
@@ -96,15 +113,18 @@ let g:ale_fixers['scss'] = ['prettier']
 let g:ale_fixers['graphql'] = ['prettier']
 let g:ale_fixers['html'] = ['prettier']
 let g:ale_fixers['vue'] = ['prettier']
+let g:ale_fixers['html.eex'] = ['prettier']
+let g:ale_fixers['eex'] = ['prettier']
 let g:ale_fixers['elixir'] = ['mix_format']
-let g:ale_linters['elixir'] = ['elixir-ls']
+let g:ale_linters['elixir'] = ['elixir-ls', 'credo']
+let g:ale_linters['exs'] = ['elixir-ls', 'credo']
 let g:ale_fix_on_save = 1
 let g:ale_javascript_prettier_options = '--trailing-comma --no-semi --no-bracket-spacing
       \ --single-quote --jsx-bracket-same-line --print-width 120'
      
 " Theme options
 set termguicolors
-colorscheme base16-materia
+colorscheme gruvbox-material
 let g:one_allow_italics = 1
 hi def link jsObjectKey Label
 
@@ -125,14 +145,16 @@ map <leader>S :e ~/.vim/vimrc<CR>
 " Double Space to open last closed file
 nnoremap <Leader><Leader> :e#<CR>
 
-"Avoid keymap duplicates
-nnoremap <C>@ <Plug>MuComplete
-
 " CTRL+P open FZF
 nnoremap <C-p> :FZF<CR>
 
 " Space + G to toggle GitGutter (git information)
 nnoremap <Leader>g :GitGutterToggle<Enter>
+let g:gitgutter_sign_added = '++'
+let g:gitgutter_sign_modified = '>>'
+let g:gitgutter_sign_removed = '--'
+let g:gitgutter_sign_removed_first_line = '^^'
+let g:gitgutter_sign_modified_removed = '--'
 " jj to return to Normal mode
 inoremap jj <ESC>l
 " jk to return to Normal Mode and save file
@@ -160,6 +182,12 @@ nnoremap <Leader>p :cp<CR>
 "Copy to Clipboard
 nnoremap <Leader>c "+y
 
+" Search Definitions, Warnings and Errors
+nnoremap <Leader>p :Vista finder<CR>
+nnoremap <Leader>e :ALENext<CR>
+nnoremap <Leader>E :ALEPrevious<CR>
+nnoremap <Leader>d :ALEGoToDefinition<CR>
+
 "VimDiff configuration
 "" If doing a diff. Upon writing changes to file, automatically update the
 " differences
@@ -185,14 +213,6 @@ let g:airline#extensions#tabline#formatter = 'unique_tail'
 
 " Custom setup that removes filetype/whitespace from default vim airline bar
 let g:airline#extensions#default#layout = [['a', 'b', 'c'], ['x', 'z', 'warning', 'error']]
-
-let airline#extensions#coc#stl_format_err = '%E{[%e(#%fe)]}'
-
-let airline#extensions#coc#stl_format_warn = '%W{[%w(#%fw)]}'
-
-" Configure error/warning section to use coc.nvim
-let g:airline_section_error = '%{airline#util#wrap(airline#extensions#coc#get_error(),0)}'
-let g:airline_section_warning = '%{airline#util#wrap(airline#extensions#coc#get_warning(),0)}'
 
 " Disable vim-airline in preview mode
 let g:airline_exclude_preview = 1
@@ -221,3 +241,25 @@ endtry
 
 set noswapfile
 
+function! NearestMethodOrFunction() abort
+  return get(b:, 'vista_nearest_method_or_function', '')
+endfunction
+
+set statusline+=%{NearestMethodOrFunction()}
+
+" By default vista.vim never run if you don't call it explicitly.
+"
+" If you want to show the nearest function in your statusline automatically,
+" you can add the following line to your vimrc
+autocmd VimEnter * call vista#RunForNearestMethodOrFunction()
+let g:vista_icon_indent = ["╰─▸ ", "├─▸ "]
+
+
+let g:vista_default_executive = 'ale'
+let g:vista#renderer#enable_icon = 1
+let g:vista#renderer#icons = {
+\   "function": "\uf794",
+\   "variable": "\uf71b",
+\  }
+
+let g:vista_fzf_preview = ['right:50%']
