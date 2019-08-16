@@ -75,6 +75,11 @@ set is
 set wildignore+=*/tmp/*,*.so,*.swp,*.pdf,*.zip,*/node_modules/*,*/build/*,*/dist/*
 let g:jsx_ext_required = 0
 
+" Configuring Folds
+set foldmethod=indent
+set foldnestmax=3
+set foldlevel=1
+
 " ALE
 let g:ale_completion_enabled = 1
 let g:ale_sign_error = '✘'
